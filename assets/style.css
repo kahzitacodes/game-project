@@ -1,0 +1,19 @@
+* {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+}
+
+#my-canvas {
+     border: 5px solid black;
+     left: 50%;
+     max-height: 100%;
+     max-width: 100%;
+     position: absolute;
+     transform: translate(-50%, -50%);
+     top: 50%;
+}
+
+#player {
+     display: none;
+}

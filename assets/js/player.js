@@ -55,7 +55,6 @@ export class Player {
 			this.frameTimer = 0;
 			if (this.frameX < this.maxFrame) {
 				this.frameX++;
-				console.log(this.maxFrame);
 			} else {
 				this.frameX = 0;
 			}

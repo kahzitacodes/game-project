@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
 	const canvas = document.getElementById("my-canvas");
 	const ctx = canvas.getContext("2d");
 
-	canvas.width = 500;
+	canvas.width = 900;
 	canvas.height = 500;
 
 	class Game {
@@ -23,19 +23,30 @@ window.addEventListener("load", function () {
 			this.input = new InputHandler(this);
 			this.UI = new UI(this);
 			this.enemies = [];
+			this.collisions = [];
 			this.enemyTimer = 0;
 			this.enemyInterval = 1200;
+			this.fontColor = "black";
 			this.debug = false;
 			this.score = 0;
-			this.fontColor = "black";
+			this.winningScore = 500;
+			this.time = 0;
+			this.maxTime = 1000000;
+			this.gameOver = false;
+			this.lives = 5;
 		}
 
 		update(deltaTime) {
+			this.time += deltaTime;
+			if (this.time > this.maxTime) {
+				this.gameOver = true;
+			}
+
 			this.background.update();
 
 			this.player.update(this.input.keys, deltaTime);
 
-			// handleEnemies
+			// handle enemies
 			if (this.enemyTimer > this.enemyInterval) {
 				this.addEnemy();
 				this.enemyTimer = 0;
@@ -44,10 +55,15 @@ window.addEventListener("load", function () {
 			}
 			this.enemies.forEach((enemy) => {
 				enemy.update(deltaTime);
-				if (enemy.deleteLater) {
-					this.enemies.splice(this.enemies.indexOf(enemy), 1);
-				}
 			});
+
+			// handle collision sprites
+			this.collisions.forEach((collision) => {
+				collision.update(deltaTime);
+			});
+
+			this.enemies = this.enemies.filter((enemy) => !enemy.willBeDeleted);
+			this.collisions = this.collisions.filter((collision) => !collision.willBeDeleted);
 		}
 
 		draw(context) {
@@ -55,6 +71,9 @@ window.addEventListener("load", function () {
 			this.player.draw(context);
 			this.enemies.forEach((enemy) => {
 				enemy.draw(context);
+			});
+			this.collisions.forEach((collision) => {
+				collision.draw(context);
 			});
 			this.UI.draw(context);
 		}
@@ -74,6 +93,7 @@ window.addEventListener("load", function () {
 	let lastTime = 0;
 
 	function animate(timeStamp) {
+		const button = document.getElementById("btn-play");
 		const deltaTime = timeStamp - lastTime;
 		//console.log(deltaTime);
 		lastTime = timeStamp;
@@ -82,7 +102,15 @@ window.addEventListener("load", function () {
 
 		game.update(deltaTime);
 		game.draw(ctx);
-		requestAnimationFrame(animate);
+
+		if (!game.gameOver) {
+			requestAnimationFrame(animate);
+		} else {
+			button.addEventListener("click", () => {
+				location.reload();
+			});
+			button.classList.add("show");
+		}
 	}
 
 	animate(0);

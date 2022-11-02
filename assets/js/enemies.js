@@ -5,7 +5,7 @@ class Enemy {
 		this.fps = 20;
 		this.frameInterval = 1000 / this.fps;
 		this.frameTimer = 0;
-		this.deleteLater = false;
+		this.willBeDeleted = false;
 	}
 
 	update(deltaTime) {
@@ -25,7 +25,7 @@ class Enemy {
 
 		// check if it's off screen
 		if (this.x + this.width < 0) {
-			this.deleteLater = true;
+			this.willBeDeleted = true;
 		}
 	}
 
@@ -96,7 +96,7 @@ export class ClimbingEnemy extends Enemy {
 		}
 
 		if (this.y < -this.height) {
-			this.deleteLater = true;
+			this.willBeDeleted = true;
 		}
 	}
 

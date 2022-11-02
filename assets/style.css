@@ -22,6 +22,30 @@
 #layer5,
 #enemy-fly,
 #enemy-plant,
-#enemy-spider {
+#enemy-spider,
+#boom,
+#live {
 	display: none;
+}
+
+#btn-play {
+	background: black;
+	border: none;
+	border-radius: 10px;
+	bottom: 14%;
+	color: white;
+	cursor: pointer;
+	display: none;
+	font-family: "Bebas Neue";
+	font-size: 20px;
+	left: 50%;
+	padding: 15px 20px;
+	position: absolute;
+	transform: translate(-50%, 0);
+}
+#btn-play:hover {
+	opacity: 0.8;
+}
+#btn-play.show {
+	display: block;
 }

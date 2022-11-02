@@ -6,6 +6,7 @@ const states = {
 	ROLLING: 4,
 	DIVING: 5,
 	HIT: 6,
+	IDLE: 7,
 };
 
 class State {
@@ -31,6 +32,8 @@ export class Sitting extends State {
 			this.player.setState(states.RUNNING, 1);
 		} else if (input.includes("Shift")) {
 			this.player.setState(states.ROLLING, 1);
+		} else if (input.includes("ArrowUp") && this.player.onGround()) {
+			this.player.setState(states.IDLE, 0);
 		}
 	}
 }
@@ -54,6 +57,8 @@ export class Running extends State {
 			this.player.setState(states.JUNPING, 1);
 		} else if (input.includes("Shift")) {
 			this.player.setState(states.ROLLING, 1);
+		} else if (input.length === 0) {
+			this.player.setState(states.IDLE, 0);
 		}
 	}
 }
@@ -78,6 +83,8 @@ export class Jumping extends State {
 			this.player.setState(states.FALLING, 1);
 		} else if (input.includes("Shift")) {
 			this.player.setState(states.ROLLING, 1);
+		} else if (input.includes("ArrowDown")) {
+			this.player.setState(states.DIVING, 0);
 		}
 	}
 }
@@ -96,7 +103,9 @@ export class Falling extends State {
 
 	handleInput(input) {
 		if (this.player.onGround()) {
-			this.player.setState(states.RUNNING, 1);
+			this.player.setState(states.IDLE, 0);
+		} else if (input.includes("ArrowDown")) {
+			this.player.setState(states.DIVING, 0);
 		}
 	}
 }
@@ -115,11 +124,81 @@ export class Rolling extends State {
 
 	handleInput(input) {
 		if (!input.includes("Shift") && this.player.onGround()) {
-			this.player.setState(states.RUNNING, 1);
+			this.player.setState(states.IDLE, 0);
 		} else if (!input.includes("Shift") && !this.player.onGround()) {
 			this.player.setState(states.FALLING, 1);
 		} else if (input.includes("Shift") && input.includes("ArrowUp") && this.player.onGround()) {
 			this.player.vy -= 28;
+		} else if (input.includes("ArrowDown") && !this.player.onGround()) {
+			this.player.setState(states.DIVING, 0);
+		}
+	}
+}
+
+export class Diving extends State {
+	constructor(player) {
+		super("DIVING");
+		this.player = player;
+	}
+
+	enter() {
+		this.player.frameX = 0;
+		this.player.maxFrame = 6;
+		this.player.frameY = 6;
+		this.player.vy = 15;
+	}
+
+	handleInput(input) {
+		if (!input.includes("Shift") && this.player.onGround()) {
+			this.player.setState(states.IDLE, 0);
+		} else if (input.includes("Shift") && this.player.onGround()) {
+			this.player.setState(states.ROLLING, 2);
+		}
+	}
+}
+
+export class Hit extends State {
+	constructor(player) {
+		super("HIT");
+		this.player = player;
+	}
+
+	enter() {
+		this.player.frameX = 0;
+		this.player.maxFrame = 10;
+		this.player.frameY = 4;
+	}
+
+	handleInput(input) {
+		if (this.player.frameX >= 10 && this.player.onGround()) {
+			this.player.setState(states.IDLE, 0);
+		} else if (input.includes("Shift") && !this.player.onGround()) {
+			this.player.setState(states.FALLING, 1);
+		}
+	}
+}
+
+export class Idle extends State {
+	constructor(player) {
+		super("IDLE");
+		this.player = player;
+	}
+
+	enter() {
+		this.player.frameX = 0;
+		this.player.maxFrame = 6;
+		this.player.frameY = 0;
+	}
+
+	handleInput(input) {
+		if (input.includes("ArrowLeft") || input.includes("ArrowRight")) {
+			this.player.setState(states.RUNNING, 1);
+		} else if (input.includes("Shift")) {
+			this.player.setState(states.ROLLING, 1);
+		} else if (input.includes("ArrowDown")) {
+			this.player.setState(states.SITTING, 0);
+		} else if (input.includes("ArrowUp")) {
+			this.player.setState(states.JUNPING, 0);
 		}
 	}
 }

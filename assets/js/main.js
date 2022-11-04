@@ -15,7 +15,7 @@ window.addEventListener("load", function () {
 		constructor(width, height) {
 			this.width = width;
 			this.height = height;
-			this.groundMargin = 82;
+			this.groundMargin = 40;
 			this.speed = 0;
 			this.maxSpeed = 3;
 			this.background = new Background(this);
@@ -26,12 +26,12 @@ window.addEventListener("load", function () {
 			this.collisions = [];
 			this.enemyTimer = 0;
 			this.enemyInterval = 1200;
-			this.fontColor = "black";
+			this.fontColor = "white";
 			this.debug = false;
 			this.score = 0;
 			this.winningScore = 500;
 			this.time = 0;
-			this.maxTime = 1000000;
+			this.maxTime = 120000;
 			this.gameOver = false;
 			this.lives = 5;
 		}

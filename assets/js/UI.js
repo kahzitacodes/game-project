@@ -19,22 +19,22 @@ export class UI {
 		context.fillText("Time: " + (this.game.time * 0.001).toFixed(1), 150, 40);
 
 		//lives
-		context.fillText("x " + this.game.lives, this.game.width - 45, 38);
+		context.fillText("x " + this.game.lives, this.game.width - 45, 40);
 
-		context.drawImage(this.livesImage, this.game.width - 75, 20, 20, 20);
+		context.drawImage(this.livesImage, this.game.width - 80, 18, 24, 24);
 		// game over message
 		if (this.game.gameOver) {
 			context.textAlign = "center";
-			context.font = this.fontSize * 2 + "px " + this.fontFamily;
+			context.font = this.fontSize * 4 + "px " + this.fontFamily;
 
 			if (this.game.score > this.game.winningScore && this.game.lives >= 1) {
-				context.fillText("Game Over", this.game.width * 0.5, this.game.height * 0.5 - 30);
-				context.font = this.fontSize * 0.7 + "px " + this.fontFamily;
-				context.fillText("You played well!!", this.game.width * 0.5, this.game.height * 0.5);
+				context.fillText("Good job", this.game.width * 0.5, this.game.height * 0.5);
+				context.font = this.fontSize * 1 + "px " + this.fontFamily;
+				context.fillText("You played well!!", this.game.width * 0.5, this.game.height * 0.5 + 45);
 			} else {
-				context.fillText("Game Over", this.game.width * 0.5, this.game.height * 0.5 - 30);
-				context.font = this.fontSize * 0.7 + "px " + this.fontFamily;
-				context.fillText("Better luck next time!", this.game.width * 0.5, this.game.height * 0.5);
+				context.fillText("Game Over", this.game.width * 0.5, this.game.height * 0.5);
+				context.font = this.fontSize * 1 + "px " + this.fontFamily;
+				context.fillText("Better luck next time!", this.game.width * 0.5, this.game.height * 0.5 + 45);
 			}
 		}
 	}

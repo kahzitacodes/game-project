@@ -42,6 +42,10 @@ window.addEventListener("load", function () {
 				this.gameOver = true;
 			}
 
+			if (this.score >= this.winningScore) {
+				this.gameOver = true;
+			}
+
 			this.background.update();
 
 			this.player.update(this.input.keys, deltaTime);
